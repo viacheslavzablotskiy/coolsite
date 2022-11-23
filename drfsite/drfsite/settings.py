@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -16,7 +17,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -30,6 +30,9 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'rest_framework.authtoken',
     'djoser',
+    # 'widget_tweaks',
+
+
 
 ]
 
@@ -63,7 +66,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'drfsite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -78,7 +80,6 @@ DATABASES = {
 
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -98,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -109,7 +109,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -127,15 +126,13 @@ REST_FRAMEWORK = {'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRen
                   'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny',
                                                  ],
                   'DEFAULT_AUTHENTICATION_CLASSES': [
-                                                'rest_framework_simplejwt.authentication.JWTAuthentication',
-                                                'rest_framework.authentication.BasicAuthentication',
-                                                'rest_framework.authentication.SessionAuthentication',
-                                                'rest_framework.authentication.TokenAuthentication',
-    ]
+                      'rest_framework_simplejwt.authentication.JWTAuthentication',
+                      'rest_framework.authentication.BasicAuthentication',
+                      'rest_framework.authentication.SessionAuthentication',
+                      'rest_framework.authentication.TokenAuthentication',
+                  ]
 
                   }
-
-
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -168,3 +165,21 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BROKER', 'redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Africa/Nairobi'
+
+
+# EMAIL_BACKEND = "django.core.mail.backend.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+#
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# SERVER_EMAIL = EMAIL_HOST_USER

@@ -43,6 +43,7 @@ class CustomerAPIViewTests(APITestCase):  # new here
 
     def test_post_customer_authenticated(self):
         data = {
+            "id": 1,
             'title': 'LOGIN',
             'content': 'COOL PUT GET DELETE',
             # "time_create": "2022-11-17T22:38:11.840967Z",
@@ -56,7 +57,7 @@ class CustomerAPIViewTests(APITestCase):  # new here
 
 class RouterTestApi(APITestCase):
     url = reverse('margo')
-    costumer_url = reverse('main', args=[3])
+
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -67,6 +68,7 @@ class RouterTestApi(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
         data = {
+            "id": 1,
             'title': 'LOGIN',
             'content': 'COOL PUT GET DELETE',
             # "time_create": "2022-11-17T22:38:11.840967Z",
@@ -78,13 +80,16 @@ class RouterTestApi(APITestCase):
 
 
     def test_router_simple_costumer(self):
-        response = self.client.get(self.costumer_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # costumer_url = reverse('main', args=[1])
+        response = self.client.get("/api/3/")
         self.assertEqual(response.data['title'], 'LOGIN')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(response.data['title'], 'LOGIN')
 
     def test_get_customers_un_authenticated(self):
+        # costumer_url = reverse('main', args=[1])
         self.client.force_authenticate(user=None, token=None)
-        response = self.client.get(self.costumer_url)
+        response = self.client.get(reverse("main", args=[1]))
         self.assertEquals(response.status_code, 401)
 
 
